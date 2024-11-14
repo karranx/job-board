@@ -10,6 +10,7 @@ import { Pagination, PaginationContent, PaginationItem } from './ui/pagination';
 import { PaginationPages } from './ui/paginator';
 import JobCard from './Jobcard';
 import APP_PATHS from '@/config/path.config';
+import { redirect } from 'next/navigation';
 
 type PaginatorProps = {
   searchParams: JobQuerySchemaType;
@@ -22,6 +23,10 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
   ]);
 
   const userbookmarkArr: { jobId: string }[] | null = getUserBookmarks.data;
+
+  if (jobs.code === 401) {
+    redirect('/signin');
+  }
 
   if (!jobs.status || !jobs.additional) {
     return <div>Error {jobs.message}</div>;
